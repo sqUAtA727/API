@@ -1,8 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Classes;
 import com.example.demo.entity.Student;
-import com.example.demo.repository.ClassRepository;
 import com.example.demo.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,22 +9,18 @@ import java.util.List;
 @Service
 public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
-    private final ClassRepository classRepository;
 
-    public StudentServiceImpl(StudentRepository studentRepository, ClassRepository classRepository) {
+    public StudentServiceImpl(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
-        this.classRepository = classRepository;
     }
 
     public Student addStudent(Long classId, Student student) {
-        Classes classes = classRepository.findById(classId).orElseThrow();
-        student.setClassroom(classes);
+        student.setClassId(classId);
         return studentRepository.save(student);
     }
 
     public List<Student> addManyStudents(Long classId, List<Student> students) {
-        Classes classes = classRepository.findById(classId).orElseThrow();
-        students.forEach(student -> student.setClassroom(classes));
+        students.forEach(student -> student.setClassId(classId));
         return studentRepository.saveAll(students);
     }
 
@@ -39,14 +33,16 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public List<Student> getStudentsByClassId(Long classId) {
-        Classes classes = classRepository.findById(classId).orElseThrow();
-        return classes.getStudents();
+        return studentRepository.findStudentsByClassId(classId);
     }
 
     public Student transferStudent(Long studentId, Long newClassId) {
         Student student = studentRepository.findById(studentId).orElseThrow();
-        Classes classes = classRepository.findById(newClassId).orElseThrow();
-        student.setClassroom(classes);
+        student.setClassId(newClassId);
         return studentRepository.save(student);
+    }
+
+    public List<Student> findStudentByName(String name) {
+        return studentRepository.findByNameContainingIgnoreCase(name);
     }
 }

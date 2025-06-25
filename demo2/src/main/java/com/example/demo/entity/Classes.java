@@ -12,8 +12,7 @@ public class Classes {
     private String name;
     private String teacher;
 
-    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
-    private List<Student> students;
+//    private List<Student> students;
 
     public Long getId() {
         return id;
@@ -39,11 +38,11 @@ public class Classes {
         this.teacher = teacher;
     }
 
-    public List<Student> getStudents() {
-        return students;
-    }
-
-    public void setStudents(List<Student> students) {
-        this.students = students;
-    }
+//    public List<Student> getStudents() {
+//        return students;
+//    }
+//
+//    public void setStudents(List<Student> students) {
+//        this.students = students;
+//    }
 }

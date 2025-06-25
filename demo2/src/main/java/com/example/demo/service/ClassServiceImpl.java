@@ -25,7 +25,7 @@ public class ClassServiceImpl implements ClassService {
     public void deleteClass(Long classId) {
         List<Student> students = studentRepository.findAll();
         for (Student student : students) {
-            if (student.getClassroom().getId().equals(classId)) {
+            if (student.getClassId().equals(classId)) {
                 studentRepository.delete(student);
             }
         }

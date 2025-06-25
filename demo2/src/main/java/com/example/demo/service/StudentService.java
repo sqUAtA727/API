@@ -11,4 +11,5 @@ public interface StudentService {
     List<Student> getAllStudents();
     List<Student> getStudentsByClassId(Long classId);
     Student transferStudent(Long studentId, Long newClassId);
+    List<Student> findStudentByName(String studentName);
 }

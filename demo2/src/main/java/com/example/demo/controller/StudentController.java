@@ -44,4 +44,9 @@ public class StudentController {
     public Student transfer(@PathVariable Long studentId, @PathVariable Long newClassId) {
         return studentService.transferStudent(studentId, newClassId);
     }
+
+    @GetMapping("/find/{studentName}")
+    public List<Student> findByStudentName(@PathVariable String studentName) {
+        return studentService.findStudentByName(studentName);
+    }
 }
