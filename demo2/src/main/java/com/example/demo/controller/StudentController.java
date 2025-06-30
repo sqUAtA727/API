@@ -2,9 +2,13 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Student;
 import com.example.demo.service.StudentService;
+import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/student")
@@ -30,9 +34,14 @@ public class StudentController {
         return studentService.getStudentById(id);
     }
 
-    @GetMapping("/")
-    public List<Student> getAllStudents() {
-        return studentService.getAllStudents();
+    @GetMapping("/allStudent")
+    public List<Student> getAllStudents(@RequestParam int page, @RequestParam int size) {
+        return studentService.getAllStudents(page, size);
+    }
+
+    @GetMapping("/search")
+    public List<Map<String, Object>> searchStudents(@RequestParam(required = false) String name, @RequestParam(required = false) String email, @RequestParam(required = false) String gender, @RequestParam(required = false) Integer ageMin, @RequestParam(required = false) Integer ageMax, @RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "10") int size) {
+        return studentService.searchStudents(name, email, gender, ageMin, ageMax, page, size).getContent();
     }
 
     @GetMapping("/class/{classId}")
