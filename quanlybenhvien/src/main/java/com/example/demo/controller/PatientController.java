@@ -32,6 +32,11 @@ public class PatientController {
         return patientService.findAllPatients(PageRequest.of(page, size));
     }
 
+    @GetMapping("/{doctorId}/all")
+    public Page<Patient> getPatientsByDoctorId(@PathVariable Long doctorId, @RequestParam int page, @RequestParam int size) {
+        return patientService.findAllPatientsByDoctorId(doctorId, PageRequest.of(page, size));
+    }
+
     @GetMapping("/search")
     public Page<Patient> searchPatient(
             @RequestParam(required = false) Long id, // để có thể đưa kiểu null

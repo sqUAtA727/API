@@ -66,6 +66,10 @@ public class PatientService {
         return patientRepository.findAll(pageable);
     }
 
+    public Page<Patient> findAllPatientsByDoctorId(Long doctorId, Pageable pageable) {
+        return patientRepository.findAllByDoctorId(doctorId, pageable);
+    }
+
     public Page<Patient> searchPatients(
             Long id,
             String name,
