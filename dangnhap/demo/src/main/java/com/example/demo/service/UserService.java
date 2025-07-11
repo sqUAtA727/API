@@ -55,7 +55,7 @@ public class UserService {
         return userRepo.save(user);
     }
 
-    public LoginResponse login(LoginRequest request) {
+    public String login(LoginRequest request) {
         log.info("Login request: {}", request.getUsername());
 
         User user = userRepo.findByUsernameAndPassword(request.getUsername(), request.getPassword());
@@ -67,17 +67,17 @@ public class UserService {
 
         String token = JwtUtil.generateToken(user);
 
-        log.info("User logged in successfully: " + user.getUsername());
+        log.info("User logged in successfully: {}", user.getUsername());
 
-        LoginResponse response = new LoginResponse();
-        response.setToken(token);
-        response.setId(user.getId());
-        response.setName(user.getName());
-        response.setEmail(user.getEmail());
-        response.setUsername(user.getUsername());
+        return token;
+    }
 
-        roleRepo.findById(user.getRoleId()).ifPresent(role -> response.setRoleName(role.getName()));
-
-        return response;
+    public User getUser(String token) {
+        try {
+            String username = JwtUtil.getUsernameFromToken(token);
+            return userRepo.findByUsername(username);
+        } catch (Exception e) {
+            throw new RuntimeException("Invalid token");
+        }
     }
 }
